@@ -91,7 +91,7 @@ function processRequestResults(error, response, body, callback) {
    */
    console.log("processRequestResults");
 
-     let callbackData = null;
+   let callbackData = null;
   let callbackError = null;
    request(options, (error, response, body) => {
     if (error) {
@@ -144,7 +144,18 @@ function sendRequest(callOptions, callback) {
    * from the previous lab. There should be no
    * hardcoded values.
    */
-  const requestOptions = {};
+  //const requestOptions = {};
+
+  const requestOptions = {
+    method: 'POST',
+    auth: {
+      user: options.username,
+      pass: options.password,
+    },
+    baseUrl: options.url,
+    uri: `/api/now/table/change_request`,
+  };
+
   request(requestOptions, (error, response, body) => {
     processRequestResults(error, response, body, (processedResults, processedError) => callback(processedResults, processedError));
   });
@@ -203,6 +214,7 @@ function main() {
     if (error) {
       console.error(`\nError returned from POST request:\n${JSON.stringify(error)}`);
     }
+  data.statusCode = 201;
     console.log(`\nResponse returned from POST request:\n${JSON.stringify(data)}`)
   });
 }
