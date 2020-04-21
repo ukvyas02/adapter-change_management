@@ -209,7 +209,7 @@ console.log("callOptions.method ::::::::::"+callOptions.method);
       pass: options.password,
     },
     baseUrl: options.url,
-    uri: this.uri,
+    uri: uri,
   };
 
   request(requestOptions, (error, response, body) => {
