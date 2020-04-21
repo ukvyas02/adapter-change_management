@@ -42,6 +42,7 @@ const validResponseRegex = /(2\d\d)/;
  * @return {string} ServiceNow URL
  */
 function constructUri(serviceNowTable, query = null) {
+  console.log("constructUri :::::::::"+serviceNowTable);
   let uri = `/api/now/table/${serviceNowTable}`;
   if (query) {
     uri = uri + '?' + query;
@@ -89,6 +90,7 @@ function processRequestResults(error, response, body, callback) {
    * This function must not check for a hibernating instance;
    * it must call function isHibernating.
    */
+   
    console.log("processRequestResults");
 
    let callbackData = null;
@@ -138,6 +140,12 @@ function sendRequest(callOptions, callback) {
     uri = constructUri(callOptions.serviceNowTable, callOptions.query);
   else
     uri = constructUri(callOptions.serviceNowTable);
+  
+  
+console.log("uri:::::::::"+uri);
+
+console.log("callOptions.method ::::::::::"+callOptions.method);
+
   /**
    * You must build the requestOptions object.
    * This is not a simple copy/paste of the requestOptions object
@@ -147,13 +155,13 @@ function sendRequest(callOptions, callback) {
   //const requestOptions = {};
 
   const requestOptions = {
-    method: 'POST',
+    method: callOptions.method,
     auth: {
       user: options.username,
       pass: options.password,
     },
     baseUrl: options.url,
-    uri: `/api/now/table/change_request`,
+    uri: this.uri,
   };
 
   request(requestOptions, (error, response, body) => {
@@ -194,8 +202,9 @@ function get(callOptions, callback) {
  * @param {error} callback.error - The error property of callback.
  */
 function post(callOptions, callback) {
+  console.log("test post :::::::::::::");
   callOptions.method = 'POST';
-  sendRequest(callOptions, (results, error) => callback(results, error));
+   sendRequest(callOptions, (results, error) => callback(results, error));
 }
 
 

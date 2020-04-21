@@ -2,6 +2,11 @@ const request = require('request');
 
 const validResponseRegex = /(2\d\d)/;
 
+const options = {
+  url: 'https://dev97097.service-now.com/',
+  username: 'admin',
+  password: 'Ukv@tim123'
+};
 
 /**
  * The ServiceNowConnector class.
@@ -176,26 +181,39 @@ class ServiceNowConnector {
  *   Will be HTML text if hibernating instance.
  * @param {error} callback.error - The error property of callback.
  */
- sendRequest(callOptions, callback) {
+  sendRequest(callOptions, callback) {
   // Initialize return arguments for callback
-  console.log("send request function" + callOptions + "TTTTTTTTTTTT"+ callback + "YYYYYYYYYYYY"+callOptions.query +"JJJJJJJJJJJJ"+callOptions.serviceNowTable);
-  
   let uri;
   if (callOptions.query)
     uri = this.constructUri(callOptions.serviceNowTable, callOptions.query);
   else
     uri = this.constructUri(callOptions.serviceNowTable);
+  
+  
+console.log("uri:::::::::"+uri);
+
+console.log("callOptions.method ::::::::::"+callOptions.method);
+
   /**
    * You must build the requestOptions object.
    * This is not a simple copy/paste of the requestOptions object
    * from the previous lab. There should be no
    * hardcoded values.
    */
-  const requestOptions = {};
+  //const requestOptions = {};
 
+  const requestOptions = {
+    method: callOptions.method,
+    auth: {
+      user: options.username,
+      pass: options.password,
+    },
+    baseUrl: options.url,
+    uri: this.uri,
+  };
 
   request(requestOptions, (error, response, body) => {
-    this.processRequestResults(error, response, body, (processedResults, processedError) => callback(processedResults, processedError));
+   this.processRequestResults(error, response, body, (processedResults, processedError) => callback(processedResults, processedError));
   });
 }
 
@@ -216,7 +234,7 @@ class ServiceNowConnector {
  */
  post(callOptions, callback) {
   callOptions.method = 'POST';
-  sendRequest(callOptions, (results, error) => callback(results, error));
+  this.sendRequest(callOptions, (results, error) => callback(results, error));
 }
 
 
