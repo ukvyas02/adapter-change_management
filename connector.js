@@ -136,7 +136,7 @@ class ServiceNowConnector {
 
    let callbackData = null;
   let callbackError = null;
-   request(options, (error, response, body) => {
+   request(this.options, (error, response, body) => {
     if (error) {
       console.log("processRequestResults if condition error :::::");
       console.error('Error present.');
@@ -182,9 +182,9 @@ class ServiceNowConnector {
   
   let uri;
   if (callOptions.query)
-    uri = constructUri(callOptions.serviceNowTable, callOptions.query);
+    uri = this.constructUri(callOptions.serviceNowTable, callOptions.query);
   else
-    uri = constructUri(callOptions.serviceNowTable);
+    uri = this.constructUri(callOptions.serviceNowTable);
   /**
    * You must build the requestOptions object.
    * This is not a simple copy/paste of the requestOptions object
@@ -195,7 +195,7 @@ class ServiceNowConnector {
 
 
   request(requestOptions, (error, response, body) => {
-    processRequestResults(error, response, body, (processedResults, processedError) => callback(processedResults, processedError));
+    this.processRequestResults(error, response, body, (processedResults, processedError) => callback(processedResults, processedError));
   });
 }
 
