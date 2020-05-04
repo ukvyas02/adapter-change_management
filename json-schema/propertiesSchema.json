@@ -5,9 +5,9 @@
   "properties": {
     "url": {
       "type": "string",
-      "default": "https://dev97097.service-now.com/",
+      "default": "https://dev60071.service-now.com/",
       "examples": [
-        "https://dev97097.service-now.com/"
+        "https://dev60071.service-now.com/"
       ]
     },
     "auth": {
