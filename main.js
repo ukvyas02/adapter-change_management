@@ -94,6 +94,10 @@ class ServiceNowAdapter extends EventEmitter {
  *   that handles the response.
  */
 healthcheck(callback) {
+
+    let callbackData = null;
+    let callbackError = null;
+
  this.getRecord((result, error) => {
    /**
     * For this lab, complete the if else conditional
@@ -102,7 +106,7 @@ healthcheck(callback) {
     * the blocks for each branch.
     */
     if (error) {
-       callbackError=error;
+        callbackError=error;
      /**
       * Write this block.
       * If an error was returned, we need to emit OFFLINE.
@@ -197,6 +201,34 @@ healthcheck(callback) {
      // console.error(`\nError returned from GET request:\n${JSON.stringify(error)}`);
       callbackError=error
     }
+
+ if (error) {
+     callbackError=error
+    }
+    
+    var jsonstring = JSON.stringify(data);
+    // jsonObject will contain a valid JavaScript object
+    let jsonObject =  JSON.parse(jsonstring);//eval('(' + jsonstring + ')');
+    let jsonbodystirng = JSON.stringify(jsonObject.body);
+    let jsonresultobj = JSON.parse(jsonObject.body);
+     //log.info("call data in json13:"+JSON.stringify(jsonresultobj.result[0]));
+     log.info("jsonresultobj.result.length array::"+jsonresultobj.result.length);
+     let servicejsonObjResult=null;
+     for(let i=0;i<jsonresultobj.result.length; i++){
+        let servicejsonobjarray= JSON.stringify(jsonresultobj.result[i]);     
+         let jsonresultobjresultarray = JSON.parse(servicejsonobjarray);
+         servicejsonObjResult=[{
+                               change_ticket_number: jsonresultobjresultarray.number,
+                                active: jsonresultobjresultarray.active,
+                                priority: jsonresultobjresultarray.priority,
+                                description: jsonresultobjresultarray.description,
+                                work_start: jsonresultobjresultarray.work_start,
+                                work_end: jsonresultobjresultarray.work_end,
+                                change_ticket_key: jsonresultobjresultarray.sys_id
+                            }
+          ]
+     }
+       
     callbackData=data;
     //console.log(`\nResponse returned from GET request:\n${JSON.stringify(data)}`)
      return callback(callbackData, callbackError);
@@ -228,6 +260,23 @@ let callbackData = null;
       callbackError=error
     }
     callbackData=data;
+
+     var jsonstring = JSON.stringify(data);
+    
+    let jsonObject =  JSON.parse(jsonstring);//eval('(' + jsonstring + ')');
+    let jsonbodystirng = JSON.stringify(jsonObject.body);
+    let jsonresultobj = JSON.parse(jsonObject.body);
+     let servicejsonobj= JSON.stringify(jsonresultobj.result[0]);
+    let jsonresultobjresult = JSON.parse(servicejsonobj);
+    let servicejsonObjResult={
+                               change_ticket_number: jsonresultobjresult.number,
+                                active: jsonresultobjresult.active,
+                                priority: jsonresultobjresult.priority,
+                                description: jsonresultobjresult.description,
+                                work_start: jsonresultobjresult.work_start,
+                                work_end: jsonresultobjresult.work_end,
+                                change_ticket_key: jsonresultobjresult.sys_id
+                            }
     //console.log(`\nResponse returned from GET request:\n${JSON.stringify(data)}`)
      return callback(callbackData, callbackError);
   });

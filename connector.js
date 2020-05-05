@@ -3,7 +3,7 @@ const request = require('request');
 const validResponseRegex = /(2\d\d)/;
 
 const options = {
-  url: 'https://dev97097.service-now.com/',
+  url: 'https://dev60071.service-now.com/',
   username: 'admin',
   password: 'Ukv@tim123'
 };
